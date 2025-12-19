@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Naik Family Tree</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0a0e0d;
+            --secondary-bg: #1a2420;
+            --accent-gold: #d4af37;
+            --accent-copper: #b87333;
+            --text-primary: #e8e3d9;
+            --text-secondary: #c4b89e;
+            --card-bg: linear-gradient(135deg, #1e2d26 0%, #2a3d35 100%);
+            --border-color: rgba(212, 175, 55, 0.3);
+            --glow: rgba(212, 175, 55, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--primary-bg);
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(184, 115, 51, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+            color: var(--text-primary);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            text-shadow: 0 0 40px var(--glow), 0 0 80px var(--glow);
+            letter-spacing: 0.05em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            letter-spacing: 0.15em;
+            font-weight: 300;
+        }
+
+        .tree-wrapper {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .generation {
+            margin-bottom: 120px;
+            position: relative;
+            animation: fadeInUp 1s ease-out backwards;
+        }
+
+        .generation:nth-child(1) { animation-delay: 0.2s; }
+        .generation:nth-child(2) { animation-delay: 0.3s; }
+        .generation:nth-child(3) { animation-delay: 0.4s; }
+        .generation:nth-child(4) { animation-delay: 0.5s; }
+        .generation:nth-child(5) { animation-delay: 0.6s; }
+
+        .generation-header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .generation-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--accent-copper);
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            display: inline-block;
+            position: relative;
+            padding: 0 30px;
+        }
+
+        .generation-title::before,
+        .generation-title::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-copper), transparent);
+        }
+
+        .generation-title::before {
+            right: 100%;
+        }
+
+        .generation-title::after {
+            left: 100%;
+        }
+
+        .family-group {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .family-group::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-copper));
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: -1;
+        }
+
+        .family-group:hover::before {
+            opacity: 0.3;
+        }
+
+        .family-group:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.2);
+        }
+
+        .parents {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .parent-card {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(42, 61, 53, 0.5);
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .parent-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .parent-card:hover::before {
+            left: 100%;
+        }
+
+        .parent-card:hover {
+            border-color: var(--accent-gold);
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px var(--glow);
+        }
+
+        .parent-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent-gold);
+        }
+
+        .separator {
+            color: var(--accent-copper);
+            font-size: 1.8rem;
+            margin: 0 10px;
+            font-weight: 300;
+        }
+
+        .children-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .child-card {
+            background: rgba(30, 45, 38, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .child-card::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--glow), transparent);
+            transform: translate(-50%, -50%);
+            transition: width 0.4s, height 0.4s;
+            z-index: 0;
+        }
+
+        .child-card:hover::after {
+            width: 200%;
+            height: 200%;
+        }
+
+        .child-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--accent-gold);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .child-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .child-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        .child-card:hover .child-name {
+            color: var(--accent-gold);
+        }
+
+        .child-spouse {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        .child-spouse::before {
+            content: '+ ';
+            color: var(--accent-copper);
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--accent-gold);
+            border: 1px solid var(--accent-gold);
+            margin-top: 8px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+
+        .no-children {
+            text-align: center;
+            color: var(--text-secondary);
+            font-style: italic;
+            padding: 20px;
+            font-size: 0.95rem;
+        }
+
+        /* Connecting lines decoration */
+        .parents::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 30px;
+            background: linear-gradient(180deg, var(--accent-gold), transparent);
+        }
+
+        /* Scroll animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Floating particles decoration */
+        .particle {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: float 15s infinite;
+            box-shadow: 0 0 10px var(--glow);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .generation-title {
+                font-size: 1.5rem;
+            }
+
+            .children-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .family-group {
+                padding: 20px;
+            }
+
+            .parent-name {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Navigation helper */
+        .nav-helper {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-copper));
+            border-color: var(--accent-gold);
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px var(--glow);
+            color: var(--primary-bg);
+        }
+
+        /* Language Toggle */
+        .language-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--card-bg);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .toggle-container:hover {
+            border-color: var(--accent-gold);
+            box-shadow: 0 8px 30px var(--glow);
+        }
+
+        .lang-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .lang-label.active {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: rgba(42, 61, 53, 0.8);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-copper));
+            border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 10px var(--glow);
+        }
+
+        .toggle-switch.marathi::before {
+            left: 33px;
+        }
+
+        @media (max-width: 768px) {
+            .language-toggle {
+                position: relative;
+                top: 0;
+                right: 0;
+                display: flex;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+
+            .toggle-container {
+                padding: 8px 15px;
+            }
+
+            .lang-label {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Language Toggle -->
+        <div class="language-toggle">
+            <div class="toggle-container">
+                <span class="lang-label active" id="eng-label">English</span>
+                <div class="toggle-switch" id="langToggle" onclick="toggleLanguage()"></div>
+                <span class="lang-label" id="mar-label">मराठी</span>
+            </div>
+        </div>
+
+        <header>
+            <h1 data-en="The Naik Family Tree" data-mr="नाईक कुटुंब वृक्ष">The Naik Family Tree</h1>
+            <p class="subtitle" data-en="Five Generations of Legacy" data-mr="पाच पिढ्यांचा वारसा">Five Generations of Legacy</p>
+        </header>
+
+        <div class="tree-wrapper">
+            <!-- Generation 1 -->
+            <div class="generation" id="gen1">
+                <div class="generation-header">
+                    <h2 class="generation-title" data-en="Generation I" data-mr="पिढी I">Generation I</h2>
+                </div>
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name" data-en="Laxman Balwant Naik" data-mr="लक्ष्मण बळवंत नाईक">Laxman Balwant Naik</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name" data-en="Anandibai" data-mr="आनंदीबाई">Anandibai</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generation 2 -->
+            <div class="generation" id="gen2">
+                <div class="generation-header">
+                    <h2 class="generation-title" data-en="Generation II" data-mr="पिढी II">Generation II</h2>
+                </div>
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name" data-en="Laxman Balwant Naik & Anandibai" data-mr="लक्ष्मण बळवंत नाईक आणि आनंदीबाई">Laxman Balwant Naik & Anandibai</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Manaku</div>
+                            <div class="child-spouse">Pandurang</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Leela</div>
+                            <div class="child-spouse">Bhaskar</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Kashinath</div>
+                            <div class="child-spouse">Kamini</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Vimal</div>
+                            <div class="child-spouse">Vishwanath</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Shantaram</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Sunanda</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generation 3 -->
+            <div class="generation" id="gen3">
+                <div class="generation-header">
+                    <h2 class="generation-title" data-en="Generation III" data-mr="पिढी III">Generation III</h2>
+                </div>
+
+                <!-- Manaku + Pandurang's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Manaku</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Pandurang</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Prakash</div>
+                            <div class="child-spouse">Surekha</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Leela + Bhaskar's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Leela</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Bhaskar</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Nandakishore</div>
+                            <div class="child-spouse">Neha</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Usha</div>
+                            <div class="child-spouse">Vilas</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Nisha</div>
+                            <div class="child-spouse">John</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Santosh</div>
+                            <div class="child-spouse">Sangita</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Ajit</div>
+                            <div class="child-spouse">Amita</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kashinath + Kamini's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Kashinath</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Kamini</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Vanita</div>
+                            <div class="child-spouse">Bhalchandra</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Mangala</div>
+                            <div class="child-spouse">Jayawant</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Jayawant</div>
+                            <div class="child-spouse">Janvhi</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Sandhya</div>
+                            <div class="child-spouse">Ganesh</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Pradeep</div>
+                            <div class="child-spouse">Priyanka</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Tushar</div>
+                            <div class="child-spouse">Shubhangi</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vimal + Vishwanath's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Vimal</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Vishwanath</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Dharmendra</div>
+                            <div class="child-spouse">Dhanashree</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Vandesh</div>
+                            <div class="child-spouse">Sujata</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Paras</div>
+                            <div class="child-spouse">Rupali</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Sachin</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generation 4 -->
+            <div class="generation" id="gen4">
+                <div class="generation-header">
+                    <h2 class="generation-title" data-en="Generation IV" data-mr="पिढी IV">Generation IV</h2>
+                </div>
+
+                <!-- Prakash + Surekha's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Prakash</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Surekha</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Rupesh</div>
+                            <div class="child-spouse">Reshma</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Rakesh</div>
+                            <div class="child-spouse">Ranjita</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Prachi</div>
+                            <div class="child-spouse">Vishwas</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nandakishore + Neha's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Nandakishore</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Neha</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Himanshu</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Mugdha</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Usha + Vilas's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Usha</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Vilas</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Amol</div>
+                            <div class="child-spouse">Pooja</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Aditi</div>
+                            <div class="child-spouse">Nishant</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nisha + John's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Nisha</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">John</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Priyanka</div>
+                            <div class="child-spouse">Roger</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Nishan</div>
+                            <div class="child-spouse">Karishma</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Santosh + Sangita's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Santosh</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Sangita</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Siddhi</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ajit + Amita's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Ajit</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Amita</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Tanishq</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vanita + Bhalchandra's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Vanita</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Bhalchandra</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Shraddha</div>
+                            <div class="child-spouse">Sachin</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mangala + Jayawant's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Mangala</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Jayawant</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Aparna</div>
+                            <div class="child-spouse">Jitendra</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Prachi</div>
+                            <div class="child-spouse">Chandrashekhar</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Rohan</div>
+                            <div class="child-spouse">Riddhi</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Mahesh</div>
+                            <div class="child-spouse">Pranjali</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jayawant + Janvhi's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Jayawant</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Janvhi</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Utkarsh</div>
+                            <div class="child-spouse">Smita</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Samruddhi</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sandhya + Ganesh's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Sandhya</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Ganesh</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Poonam</div>
+                            <div class="child-spouse">Darshan</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Nitesh</div>
+                            <div class="child-spouse">Sneha</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Sheetal</div>
+                            <div class="child-spouse">Hitesh</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Gaurav</div>
+                            <div class="child-spouse">Madhuri</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pradeep + Priyanka's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Pradeep</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Priyanka</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Kramank</div>
+                            <div class="child-spouse">Divya</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tushar + Shubhangi's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Tushar</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Shubhangi</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Dheeraj</div>
+                            <div class="child-spouse">Pratiksha</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Manthan</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dharmendra + Dhanashree's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Dharmendra</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Dhanashree</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Jaai</div>
+                            <div class="child-spouse">Nikhil</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vandesh + Sujata's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Vandesh</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Sujata</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Vedant</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paras + Rupali's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Paras</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Rupali</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Swara</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generation 5 -->
+            <div class="generation" id="gen5">
+                <div class="generation-header">
+                    <h2 class="generation-title" data-en="Generation V" data-mr="पिढी V">Generation V</h2>
+                </div>
+
+                <!-- Rupesh + Reshma's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Rupesh</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Reshma</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Drisha</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Grantha</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rakesh + Ranjita's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Rakesh</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Ranjita</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Yatharth</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Yuvansh</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prachi + Vishwas's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Prachi</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Vishwas</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Baby</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Amol + Pooja's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Amol</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Pooja</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Om</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Greha</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aditi + Nishant's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Aditi</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Nishant</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Anish</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Kimaya</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Priyanka + Roger's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Priyanka</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Roger</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Kyle</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nishan + Karishma's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Nishan</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Karishma</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Acacia</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Angelia</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shraddha + Sachin's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Shraddha</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Sachin</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Parth</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Ovi</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aparna + Jitendra's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Aparna</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Jitendra</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Pari</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prachi + Chandrashekhar's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Prachi</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Chandrashekhar</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Saee</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rohan + Riddhi's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Rohan</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Riddhi</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Dronaksh</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Utkarsh + Smita's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Utkarsh</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Smita</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Yuvansh</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Poonam + Darshan's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Poonam</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Darshan</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Gandharva</div>
+                            <span class="badge">Son</span>
+                        </div>
+                        <div class="child-card">
+                            <div class="child-name">Gargi</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nitesh + Sneha's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Nitesh</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Sneha</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Hitarth</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sheetal + Hitesh's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Sheetal</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Hitesh</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Preet</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kramank + Divya's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Kramank</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Divya</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Baby</div>
+                            <span class="badge">Daughter</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dheeraj + Pratiksha's Children -->
+                <div class="family-group">
+                    <div class="parents">
+                        <div class="parent-card">
+                            <span class="parent-name">Dheeraj</span>
+                            <span class="separator">♡</span>
+                            <span class="parent-name">Pratiksha</span>
+                        </div>
+                    </div>
+                    <div class="children-grid">
+                        <div class="child-card">
+                            <div class="child-name">Hitansh</div>
+                            <span class="badge">Son</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Helper -->
+    <div class="nav-helper">
+        <button class="nav-btn" onclick="scrollToTop()" title="Scroll to Top">↑</button>
+        <button class="nav-btn" onclick="scrollToBottom()" title="Scroll to Bottom">↓</button>
+    </div>
+
+    <script>
+        // Language state
+        var currentLang = 'en';
+
+        // Translation dictionary
+        var translations = {
+            'Son': 'मुलगा',
+            'Daughter': 'मुलगी',
+            'Scroll to Top': 'वर जा',
+            'Scroll to Bottom': 'खाली जा'
+        };
+
+        // Name translations dictionary
+        var nameTranslations = {
+            'Laxman Balwant Naik': 'लक्ष्मण बळवंत नाईक',
+            'Anandibai': 'आनंदीबाई',
+            'Laxman Balwant Naik & Anandibai': 'लक्ष्मण बळवंत नाईक आणि आनंदीबाई',
+            'Manaku': 'माणकू',
+            'Pandurang': 'पांडुरंग',
+            'Leela': 'लीला',
+            'Bhaskar': 'भास्कर',
+            'Kashinath': 'काशिनाथ',
+            'Kamini': 'कामिनी',
+            'Vimal': 'विमल',
+            'Vishwanath': 'विश्वनाथ',
+            'Shantaram': 'शांताराम',
+            'Sunanda': 'सुनंदा',
+            'Prakash': 'प्रकाश',
+            'Surekha': 'सुरेखा',
+            'Nandakishore': 'नंदकिशोर',
+            'Neha': 'नेहा',
+            'Usha': 'उषा',
+            'Vilas': 'विलास',
+            'Nisha': 'निशा',
+            'John': 'जॉन',
+            'Santosh': 'संतोष',
+            'Sangita': 'संगीता',
+            'Ajit': 'अजित',
+            'Amita': 'अमिता',
+            'Vanita': 'वनिता',
+            'Bhalchandra': 'भालचंद्र',
+            'Mangala': 'मंगला',
+            'Jayawant': 'जयवंत',
+            'Janvhi': 'जान्हवी',
+            'Sandhya': 'संध्या',
+            'Ganesh': 'गणेश',
+            'Pradeep': 'प्रदीप',
+            'Priyanka': 'प्रियांका',
+            'Tushar': 'तुषार',
+            'Shubhangi': 'शुभांगी',
+            'Dharmendra': 'धर्मेंद्र',
+            'Dhanashree': 'धनश्री',
+            'Vandesh': 'वंदेश',
+            'Sujata': 'सुजाता',
+            'Paras': 'पारस',
+            'Rupali': 'रुपाली',
+            'Sachin': 'सचिन',
+            'Rupesh': 'रुपेश',
+            'Reshma': 'रेश्मा',
+            'Rakesh': 'राकेश',
+            'Ranjita': 'रंजिता',
+            'Prachi': 'प्राची',
+            'Vishwas': 'विश्वास',
+            'Himanshu': 'हिमांशु',
+            'Mugdha': 'मुग्धा',
+            'Amol': 'अमोल',
+            'Pooja': 'पूजा',
+            'Aditi': 'अदिती',
+            'Nishant': 'निशांत',
+            'Roger': 'रॉजर',
+            'Nishan': 'निशान',
+            'Karishma': 'करिश्मा',
+            'Siddhi': 'सिद्धी',
+            'Tanishq': 'तनिष्क',
+            'Shraddha': 'श्रद्धा',
+            'Aparna': 'अपर्णा',
+            'Jitendra': 'जितेंद्र',
+            'Chandrashekhar': 'चंद्रशेखर',
+            'Rohan': 'रोहन',
+            'Riddhi': 'रिद्धी',
+            'Mahesh': 'महेश',
+            'Pranjali': 'प्रांजली',
+            'Utkarsh': 'उत्कर्ष',
+            'Smita': 'स्मिता',
+            'Samruddhi': 'समृद्धी',
+            'Poonam': 'पूनम',
+            'Darshan': 'दर्शन',
+            'Nitesh': 'नितेश',
+            'Sneha': 'स्नेहा',
+            'Sheetal': 'शितल',
+            'Hitesh': 'हितेश',
+            'Gaurav': 'गौरव',
+            'Madhuri': 'माधुरी',
+            'Kramank': 'क्रमांक',
+            'Divya': 'दिव्या',
+            'Dheeraj': 'धीरज',
+            'Pratiksha': 'प्रतिक्षा',
+            'Manthan': 'मंथन',
+            'Jaai': 'जाई',
+            'Nikhil': 'निखिल',
+            'Vedant': 'वेदांत',
+            'Swara': 'स्वरा',
+            'Drisha': 'द्रीशा',
+            'Grantha': 'ग्रंथा',
+            'Yatharth': 'यथार्थ',
+            'Yuvansh': 'युवांश',
+            'Baby': 'बाळ',
+            'Om': 'ओम',
+            'Greha': 'गृहा',
+            'Anish': 'अनिश',
+            'Kimaya': 'किमया',
+            'Kyle': 'काइल',
+            'Acacia': 'अकेशिया',
+            'Angelia': 'अँजेलिया',
+            'Parth': 'पार्थ',
+            'Ovi': 'ओवी',
+            'Pari': 'परी',
+            'Saee': 'सई',
+            'Dronaksh': 'द्रोणाक्ष',
+            'Gandharva': 'गंधर्व',
+            'Gargi': 'गार्गी',
+            'Hitarth': 'हितार्थ',
+            'Preet': 'प्रीत',
+            'Hitansh': 'हितांश'
+        };
+
+        // Toggle language function
+        window.toggleLanguage = function() {
+            var toggle = document.getElementById('langToggle');
+            var engLabel = document.getElementById('eng-label');
+            var marLabel = document.getElementById('mar-label');
+            
+            if (currentLang === 'en') {
+                currentLang = 'mr';
+                toggle.classList.add('marathi');
+                engLabel.classList.remove('active');
+                marLabel.classList.add('active');
+            } else {
+                currentLang = 'en';
+                toggle.classList.remove('marathi');
+                engLabel.classList.add('active');
+                marLabel.classList.remove('active');
+            }
+            
+            updateContent();
+        }
+
+        // Update all content based on language
+        window.updateContent = function() {
+            // Update elements with data-en and data-mr attributes
+            document.querySelectorAll('[data-en][data-mr]').forEach(function(element) {
+                if (currentLang === 'en') {
+                    element.textContent = element.getAttribute('data-en');
+                } else {
+                    element.textContent = element.getAttribute('data-mr');
+                }
+            });
+
+            // Update all names (parent-name, child-name)
+            document.querySelectorAll('.parent-name, .child-name').forEach(function(nameElement) {
+                var originalText = nameElement.textContent.trim();
+                
+                if (currentLang === 'en') {
+                    // If currently showing Marathi, find English equivalent
+                    var englishName = Object.keys(nameTranslations).find(function(key) {
+                        return nameTranslations[key] === originalText;
+                    });
+                    if (englishName) {
+                        nameElement.textContent = englishName;
+                    }
+                } else {
+                    // Translate to Marathi
+                    if (nameTranslations[originalText]) {
+                        nameElement.textContent = nameTranslations[originalText];
+                    }
+                }
+            });
+
+            // Update child-spouse (they have "+ " prefix which is added via CSS)
+            document.querySelectorAll('.child-spouse').forEach(function(spouseElement) {
+                var originalText = spouseElement.textContent.trim();
+                
+                if (currentLang === 'en') {
+                    // If currently showing Marathi, find English equivalent
+                    var englishName = Object.keys(nameTranslations).find(function(key) {
+                        return nameTranslations[key] === originalText;
+                    });
+                    if (englishName) {
+                        spouseElement.textContent = englishName;
+                    }
+                } else {
+                    // Translate to Marathi
+                    if (nameTranslations[originalText]) {
+                        spouseElement.textContent = nameTranslations[originalText];
+                    }
+                }
+            });
+
+            // Update badges
+            document.querySelectorAll('.badge').forEach(function(badge) {
+                var text = badge.textContent.trim();
+                if (currentLang === 'en') {
+                    // Reverse translation
+                    if (text === 'मुलगा') badge.textContent = 'Son';
+                    else if (text === 'मुलगी') badge.textContent = 'Daughter';
+                } else {
+                    // Forward translation
+                    if (translations[text]) {
+                        badge.textContent = translations[text];
+                    }
+                }
+            });
+
+            // Update button titles
+            document.querySelectorAll('.nav-btn').forEach(function(btn, index) {
+                if (index === 0) {
+                    btn.title = currentLang === 'en' ? 'Scroll to Top' : 'वर जा';
+                } else {
+                    btn.title = currentLang === 'en' ? 'Scroll to Bottom' : 'खाली जा';
+                }
+            });
+        }
+
+        // Create floating particles
+        window.createParticles = function() {
+            var particleCount = 20;
+            for (var i = 0; i < particleCount; i++) {
+                var particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                document.body.appendChild(particle);
+            }
+        }
+
+        // Smooth scroll functions
+        window.scrollToTop = function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        window.scrollToBottom = function() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            createParticles();
+            
+            // Add intersection observer for fade-in animations
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.family-group').forEach(function(group) {
+                observer.observe(group);
+            });
+        });
+
+        // Add hover sound effect (optional)
+        document.querySelectorAll('.child-card, .parent-card').forEach(function(card) {
+            card.addEventListener('mouseenter', function() {
+                this.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+        });
+    </script>
+</body>
+</html>
